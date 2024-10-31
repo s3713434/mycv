@@ -6,9 +6,37 @@ import { User } from './user.entity';
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
+
   create(email: string, password: string) {
     const user = this.repo.create({ email, password });
-
+    // Validation logic....
     return this.repo.save(user);
+  }
+
+  findOne(id: number) {
+    return this.repo.findOne({ where: { id } });
+  }
+
+  find(email: string) {
+    return this.repo.find({ where: { email } });
+  }
+
+  async update(id: number, newUser: Partial<User>) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new Error('user not found');
+    }
+    // We are going to load the entire entity
+    // so we are using Object.assign()
+    Object.assign(user, newUser);
+    return this.repo.save(user);
+  }
+
+  async remove(id: number) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new Error('user not found');
+    }
+    return this.repo.remove(user);
   }
 }
