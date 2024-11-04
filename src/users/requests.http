@@ -7,16 +7,13 @@ Content-Type: application/json
 }
 
 ### find a particular user with a given ID
-
-GET http://localhost:3000/auth/1
+GET http://localhost:3000/auth/4
 
 ### Find all users with a given email
-
 GET http://localhost:3000/auth?email=second@example.com
 
 ### delete a user given id
-
-DELETE http://localhost:3000/auth/3
+DELETE http://localhost:3000/auth/2
 
 ### update a user
 PATCH http://localhost:3000/auth/2
