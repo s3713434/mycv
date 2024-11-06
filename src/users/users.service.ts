@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
+import { hashPassword } from 'src/utils/hashPassword';
 
 // The Errors here are handle the complex logic or business logic,
 // or on other words to handle data errors?
@@ -28,6 +29,9 @@ export class UsersService {
     const user = await this.findOne(id);
     if (!user) {
       throw new NotFoundException('user not found');
+    }
+    if (newUser.password) {
+      newUser.password = await hashPassword(newUser.password);
     }
     // We are going to load the entire entity
     // so we are using Object.assign()
