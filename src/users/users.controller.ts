@@ -19,6 +19,7 @@ import { UserDto } from './dtos/user.dto';
 // The errors here are mostly for the basic check on the request
 
 @Controller('auth')
+@Serialize(UserDto)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -27,7 +28,6 @@ export class UsersController {
     this.usersService.create(body.email, body.password);
   }
 
-  @Serialize(UserDto)
   @Get('/:id')
   async findUser(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
     console.log('handler is running');
