@@ -8,28 +8,30 @@ import {
   Param,
   Query,
   NotFoundException,
-  UseInterceptors,
-  ClassSerializerInterceptor,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { UsersService } from './users.service';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { UserDto } from './dtos/user.dto';
 
 // The errors here are mostly for the basic check on the request
 
 @Controller('auth')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
     this.usersService.create(body.email, body.password);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
+  @Serialize(UserDto)
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
-    const user = await this.usersService.findOne(parseInt(id));
+  async findUser(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
+    console.log('handler is running');
+    const user = await this.usersService.findOne(id);
     // This will return to the user.
     if (!user) {
       throw new NotFoundException('user not found');
