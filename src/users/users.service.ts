@@ -30,6 +30,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
+
     if (newUser.password) {
       newUser.password = await hashPassword(newUser.password);
     }
