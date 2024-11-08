@@ -18,9 +18,9 @@ import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { Session } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from './user.entity';
 
 // The errors here are mostly for the basic check on the request
-
 @Controller('auth')
 @Serialize<UserDto>(UserDto)
 export class UsersController {
@@ -35,7 +35,8 @@ export class UsersController {
   // }
 
   @Get('/whoami')
-  whoAmI(@CurrentUser() user: string) {
+  // Otherwise use whoAmI(@Request() request:Request)
+  whoAmI(@CurrentUser() user: User) {
     return user;
   }
 
@@ -73,13 +74,13 @@ export class UsersController {
     return this.usersService.find(email);
   }
 
-  @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(parseInt(id));
+  @Delete('/me')
+  removeUser(@CurrentUser() user: User) {
+    return this.usersService.remove(user.id);
   }
 
-  @Patch('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.update(parseInt(id), body);
+  @Patch('/me')
+  updateUser(@CurrentUser() user: User, @Body() body: UpdateUserDto) {
+    return this.usersService.update(user.id, body);
   }
 }

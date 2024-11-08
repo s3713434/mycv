@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "email":"unique1@example.com",
-  "password":"a1234"
+  "password":"a11115"
 }
 
 ### Sign out
@@ -31,9 +31,9 @@ GET http://localhost:3000/auth?email=second@example.com
 DELETE http://localhost:3000/auth/2
 
 ### update a user
-PATCH http://localhost:3000/auth/8
+PATCH http://localhost:3000/auth/me
 Content-Type: application/json
 
 {
-  "password":"a1234"
+  "password":"a11115"
 }
