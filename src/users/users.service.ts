@@ -18,6 +18,9 @@ export class UsersService {
   }
 
   findOne(id: number) {
+    if (!id) {
+      throw new NotFoundException('You already sign out.');
+    }
     return this.repo.findOne({ where: { id } });
   }
 
