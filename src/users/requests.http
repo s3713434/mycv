@@ -2,7 +2,7 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email":"unique@example.com",
+  "email":"email@test.com",
   "password":"a1234"
 }
 
@@ -11,8 +11,8 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-  "email":"unique@example.com",
-  "password":"asfdda"
+  "email":"unique1@example.com",
+  "password":"a1234"
 }
 
 ### find a particular user with a given ID
@@ -29,5 +29,5 @@ PATCH http://localhost:3000/auth/8
 Content-Type: application/json
 
 {
-  "password":"asfdda"
+  "password":"a1234"
 }
