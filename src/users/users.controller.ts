@@ -17,6 +17,7 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { Session } from '@nestjs/common';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 // The errors here are mostly for the basic check on the request
 
@@ -28,9 +29,14 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
+  // @Get('/whoami')
+  // whoAmI(@Session() session: any) {
+  //   return this.usersService.findOne(session.userId);
+  // }
+
   @Get('/whoami')
-  whoAmI(@Session() session: any) {
-    return this.usersService.findOne(session.userId);
+  whoAmI(@CurrentUser() user: string) {
+    return user;
   }
 
   @Post('/signout')
