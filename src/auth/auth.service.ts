@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from '../users/users.service';
 import { hashPassword } from 'src/utils/hashPassword';
 import { scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
