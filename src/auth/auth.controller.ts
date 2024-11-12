@@ -8,10 +8,7 @@ import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 @Controller('auth')
 @Serialize<UserDto>(UserDto)
 export class AuthController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
