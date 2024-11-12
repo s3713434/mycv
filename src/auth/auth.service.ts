@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { hashPassword } from 'src/utils/hashPassword';
+import { hashPassword } from '../utils/hashPassword';
 import { scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 

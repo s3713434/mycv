@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { hashPassword } from 'src/utils/hashPassword';
+import { hashPassword } from '../utils/hashPassword';
 
 // The Errors here are handle the complex logic or business logic,
 // or on other words to handle data errors?
