@@ -5,9 +5,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { hashPassword } from '../utils/hashPassword';
 
 jest.mock('../utils/hashPassword', () => ({
-  hashPassword: jest
-    .fn()
-    .mockReturnValue(Promise.resolve('salt.hashedPassword')),
+  hashPassword: jest.fn().mockResolvedValue('salt.hashedPassword'),
 }));
 
 describe('AuthService', () => {
@@ -16,8 +14,12 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     fakeUsersService = {
-      find: jest.fn(),
-      create: jest.fn(),
+      find: jest.fn().mockResolvedValue([]),
+      create: jest
+        .fn()
+        .mockImplementation((email: string, password: string) =>
+          Promise.resolve({ id: 1, email, password }),
+        ),
     };
 
     const module = await Test.createTestingModule({
@@ -77,6 +79,27 @@ describe('AuthService', () => {
       await expect(
         authService.signin('test@test.com', 'wrongpassword'),
       ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should return a user if correct password is provided', async () => {
+      (fakeUsersService.find as jest.Mock).mockResolvedValue([
+        {
+          id: 1,
+          email: 'test@test.com',
+          password: 'salt.hashedPassword',
+        },
+      ]);
+
+      const user = await authService.signin('test@test.com', 'password');
+
+      console.log('Test user returned:', user);
+
+      expect(user).toEqual({
+        id: 1,
+        email: 'test@test.com',
+        password: 'salt.hashedPassword',
+      });
+      expect(hashPassword).toHaveBeenCalledWith('password');
     });
   });
 });
