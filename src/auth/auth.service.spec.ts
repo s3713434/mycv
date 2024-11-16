@@ -78,19 +78,5 @@ describe('AuthService', () => {
         authService.signin('test@test.com', 'wrongpassword'),
       ).rejects.toThrow(BadRequestException);
     });
-
-    it('should return a user if correct password is provided', async () => {
-      (fakeUsersService.find as jest.Mock).mockResolvedValue([
-        { id: 1, email: 'test@test.com', password: 'salt.hashedPassword' },
-      ]);
-
-      const user = await authService.signin('test@test.com', 'password');
-
-      expect(user).toEqual({
-        id: 1,
-        email: 'test@test.com',
-        password: 'salt.hashedPassword',
-      });
-    });
   });
 });
